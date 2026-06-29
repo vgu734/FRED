@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    container_name: fred-fastapi
+    ports:
+      - "8000:8000"
+    environment:
+      PYTHONUNBUFFERED: "1"
+    command: uvicorn fred_forecasting_project.main:app --host 0.0.0.0 --port 8000 --reload

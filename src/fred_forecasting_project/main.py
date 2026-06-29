@@ -13,7 +13,7 @@ from fred_forecasting_project.core.rate_limiter import limiter
 
 app = FastAPI(
     title="Economic Forecast API",
-    version=version("fred-forcasting-project")
+    version=version("fred-forecasting-project")
 )
 
 app.state.limiter = limiter
