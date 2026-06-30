@@ -16,9 +16,13 @@ def root(request: Request):
 
 @router.get("/health")
 @limiter.limit("30/minute")
-async def health(request: Request):
+def health(request: Request):
+    app = request.app
+    model = getattr(app.state, "model", None)
+    model_ok = model is not None
+
     return {
-        "status": "ok!!",
-        "database": "connected",
-        "model_loaded": True
+        # "status": "ok" if model_ok else "degraded", TODO: implement once ML model pipeline exists
+        "database": "connected" if app.state.db_ready else "disconnected",
+        "model_loaded": model_ok
     }
