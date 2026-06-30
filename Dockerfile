@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
 COPY . .
 
 RUN pip install --no-cache-dir --upgrade pip \
@@ -14,4 +17,4 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 EXPOSE 8000
 
-CMD ["uvicorn", "fred_forecasting_project.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "fred_forecasting_project.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

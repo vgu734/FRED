@@ -4,6 +4,32 @@ services:
     container_name: fred-fastapi
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
       PYTHONUNBUFFERED: "1"
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/fred
+    depends_on:
+      - db
     command: uvicorn fred_forecasting_project.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:16
+    container_name: fred-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fred
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
