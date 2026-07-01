@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +15,7 @@ from fred_forecasting_project.core.rate_limiter import limiter
 from fred_forecasting_project.core.logging import setup_logging
 from fred_forecasting_project.infrastructure.lifespan import lifespan
 
+load_dotenv()
 setup_logging()
 
 app = FastAPI(

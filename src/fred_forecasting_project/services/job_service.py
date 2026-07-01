@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy.exc import IntegrityError
 
+from .helpers.upsert_fred import upsert_fred
 from fred_forecasting_project.jobs.pull_fred import pull_fred
 from fred_forecasting_project.database.session import SessionLocal
 from fred_forecasting_project.models.job_runs import JobRun
@@ -80,6 +81,7 @@ def run_fred_job(source: str = "manual"):
                     datetime.now(timezone.utc))
 
         df = pull_fred()
+        upsert_fred(session, df)
 
         job.status = "success"
         job.finished_at = datetime.now(timezone.utc)
